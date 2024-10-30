@@ -1,10 +1,11 @@
 // ---- Define your dialogs  and panels here ----
 select_perms_dialog = define_new_dialog("spd", "Select Permissions");
-$("#user_select_ok_button").click(function(){
-    $("#spd").html("User successfully added. Please add permissions for this user.");
-    $("#spd").dialog("open");
-})
+$("#user_select_ok_button").click(function() {
+    let selectedUsername = $("#user_select_list").attr("selected_item");
 
+    $("#spd").html(`${selectedUsername} successfully added. Please add permissions for this user.`);
+    $("#spd").dialog("open");
+});
 
 // ---- Display file structure ----
 
