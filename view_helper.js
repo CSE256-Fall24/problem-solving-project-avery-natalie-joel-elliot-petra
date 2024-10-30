@@ -446,7 +446,7 @@ user_select_dialog = define_new_dialog('user_select_dialog2', 'Select User', {
             },
         },
         OK: {
-            text: "OK",
+            text: "Add",
             id: "user_select_ok_button",
             click: function() {
                 // When "OK" is clicked, we want to populate some other element with the selected user name 
