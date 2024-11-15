@@ -7,6 +7,30 @@ $("#user_select_ok_button").click(function() {
     $("#spd").dialog("open");
 });
 
+var new_permissions = define_new_effective_permissions(id_prefix="newpermissions1", add_info_col = true);
+$('#sidepanel').append(new_permissions)
+
+$('#newpermissions1').attr('filepath', '/C/presentation_documents/important_file.txt')
+
+var user_select_field = define_new_user_select_field(id_prefix='user_select_field', select_button_text='user', on_user_change = function(selected_user){$('#newpermissions1').attr('username', selected_user)})
+$('#sidepanel').append(user_select_field)
+
+var new_dialog = define_new_dialog(id_prefix="newdialog", title="Info");
+$('.perm_info').click(function(){
+    console.log('clicked!')
+    new_dialog.dialog('open')
+    var my_filename_var = $('#newpermissions1').attr('filepath')
+    var my_user_var = $('#newpermissions1').attr('username')
+    var permission_to_check = $(this).attr('permission_name');
+
+    my_file_obj_var = path_to_file[my_filename_var]
+    my_user_obj_var = all_users[my_user_var]
+    var explanation1 = allow_user_action(file = my_file_obj_var, user=my_user_var, permission_to_check, explain_why = true)
+    var explain_text = get_explanation_text(explanation1)
+    
+    new_dialog.empty()
+    new_dialog.append(explain_text)
+})
 // ---- Display file structure ----
 
 // (recursively) makes and returns an html element (wrapped in a jquery object) for a given file object
