@@ -7,6 +7,12 @@ $("#user_select_ok_button").click(function() {
     $("#spd").dialog("open");
 });
 
+$("#permdialog_grouped_permissions_Full_control_deny_checkbox").click(function() {
+    new_dialog.dialog('open')
+    new_dialog.empty()
+    new_dialog.append("You have removed all permissions for this user. Make sure to save your changes by hitting the OK button")
+});
+
 var new_permissions = define_new_effective_permissions(id_prefix="newpermissions1", add_info_col = true);
 $('#sidepanel').append(new_permissions)
 
