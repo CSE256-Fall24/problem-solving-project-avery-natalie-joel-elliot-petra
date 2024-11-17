@@ -501,6 +501,98 @@ function define_new_user_select_field(id_prefix, select_button_text, on_user_cha
     return sel_section
 }
 
+// File select dialog + helpers
+
+function make_file_elem(id_prefix, f, user_attributes=null) {
+    file_elem = $(`<div class="ui-widget-content" id="${id_prefix}_${f}" name="${f}">
+        <span id="${id_prefix}_${f}_icon" class="oi ${is_user(path_to_file[f])?'oi-person':'oi-people'}"/> 
+        <span id="${id_prefix}_${f}_text">${f} </span>
+    </div>`)
+
+    if (user_attributes) {
+        // if we need to add the user's attributes: go through the properties for that user and add each as an attribute to user_elem.
+        for(uprop in user_attributes) {
+            file_elem.attr(uprop, user_attributes[uprop])
+        }
+    }
+
+    return file_elem
+}
+
+function make_file_list(id_prefix, files, add_attributes = false) {
+    let f_elements = []
+    for(f in files){
+        // make user element; if add_attributes is true, pass along usermap[uname] for attribute creation.
+        file_elem = make_user_elem(id_prefix, f, add_attributes ? files[f] : null )
+        f_elements.push(file_elem)
+    }
+    return f_elements
+}
+
+// Make a selectable list which will store all of the files, and automatically keep track of which one is selected.
+all_files_selectlist = define_single_select_list('file_select_list')
+
+// Make the elements which reperesent all files, and add them to the selectable
+all_file_elements = make_file_list('file_select', path_to_file)
+all_files_selectlist.append(all_file_elements)
+
+file_select_dialog = define_new_dialog('file_select_dialog', 'Select File', {
+    buttons: {
+        Cancel: {
+            text: "Cancel",
+            id: "file_select_cancel_button",
+            click: function() {
+                $( this ).dialog( "close" );
+            },
+        },
+        OK: {
+            text: "Add",
+            id: "file_select_ok_button",
+            click: function() {
+                // When "OK" is clicked, we want to populate some other element with the selected user name 
+                //(to pass along the selection information to whoever opened this dialog)
+                let to_populate_id = $(this).attr('to_populate') // which field do we need to populate?
+                // console.log("populate id " + to_populate_id);
+                let selected_value = all_files_selectlist.attr('selected_item') // what is the user name that was selected?
+                // console.log("selected item " + selected_value);
+                $(`#${to_populate_id}`).attr('selected_user', selected_value) // populate the element with the id
+                $( this ).dialog( "close" );
+            }
+        }
+    }
+})
+
+function open_file_select_dialog(to_populate_id) {
+    // TODO: reset selected user?..
+
+    file_select_dialog.attr('to_populate', to_populate_id)
+    file_select_dialog.append(all_files_selectlist)
+    file_select_dialog.dialog('open')
+}
+
+function define_new_file_select_field(id_prefix, select_button_text, on_file_change = function(selected_user){}){
+    // Make the element:
+    let sel_section = $(`<div id="${id_prefix}_line" class="section">
+            <span id="${id_prefix}_field" class="ui-widget-content" style="width: 80%;display: inline-block;">&nbsp</span>
+            <button id="${id_prefix}_button" class="ui-button ui-widget ui-corner-all">${select_button_text}</button>
+        </div>`)
+
+    // Open user select on button click:
+    sel_section.find(`#${id_prefix}_button`).click(function(){
+        open_file_select_dialog(`${id_prefix}_field`)
+    })
+
+    // Set up an observer to watch the attribute change and change the field
+    let field_selector = sel_section.find(`#${id_prefix}_field`)
+    define_attribute_observer(field_selector, 'selected_user', function(new_file){
+        field_selector.text(new_file)
+        // call the function for additional processing of user change:
+        on_file_change(new_file)
+    })
+
+    return sel_section
+}
+
 //---- misc. ----
 
 // Get a (very simple) text representation of a permissions explanation

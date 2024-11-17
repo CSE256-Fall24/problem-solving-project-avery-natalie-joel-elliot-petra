@@ -10,10 +10,14 @@ $("#user_select_ok_button").click(function() {
 var new_permissions = define_new_effective_permissions(id_prefix="newpermissions1", add_info_col = true);
 $('#sidepanel').append(new_permissions)
 
-$('#newpermissions1').attr('filepath', '/C/presentation_documents/important_file.txt')
+//$('#newpermissions1').attr('filepath', '/C/presentation_documents/important_file.txt')
+var file_select_field = define_new_file_select_field(id_prefix="file_select_field", select_button_text="file", on_user_change=function(selected_file){$('#newpermissions1').attr('filepath', selected_file)});
+$('#sidepanel').append(file_select_field);
 
 var user_select_field = define_new_user_select_field(id_prefix='user_select_field', select_button_text='user', on_user_change = function(selected_user){$('#newpermissions1').attr('username', selected_user)})
 $('#sidepanel').append(user_select_field)
+
+$('#sidepanel').append("To view a user's permissions for a specific file, select a file and a user.")
 
 var new_dialog = define_new_dialog(id_prefix="newdialog", title="Info");
 $('.perm_info').click(function(){
