@@ -81,8 +81,7 @@ cant_remove_dialog = define_new_dialog('cant_remove_inherited_dialog', 'Security
 cant_remove_dialog.html(`
 <div id="cant_remove_text">
     You can't remove <span id="cant_remove_username_1" class = "cant_remove_username"></span> because this object is inheriting permissions from 
-    its parent. To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, you must prevent this object from inheriting permissions.
-    Turn off the option for inheriting permissions, and then try removing <span id="cant_remove_username_3" class = "cant_remove_username"></span>  again.
+    its parent. To remove <span id="cant_remove_username_2" class = "cant_remove_username"></span>, select "Deny full_control".
 </div>`)
 
 // Make a confirmation "are you sure you want to remove?" dialog
