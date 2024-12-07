@@ -164,12 +164,7 @@ function define_new_effective_permissions(id_prefix, add_info_col = false, which
         </tr>
         `)
         // If we want to add an additional info column (which does nothing by default)
-        if(add_info_col) {
-            row.append(`
-            <td id="${id_prefix}_${p_id}_info_cell" width="32px" style="text-align:right">
-                <span id="${id_prefix}_${p_id}_info_icon" class="fa fa-info-circle perm_info" permission_name="${p}" setting_container_id="${id_prefix}"/>
-            </td>`)
-        }
+        
         effective_container.append(row)
     }
 
